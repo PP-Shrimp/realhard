@@ -16,7 +16,7 @@
 <script>
 import excel from '@/libs/excel'
 export default {
-  name: 'export-excel',
+  name: 'adv-manage',
   data () {
     return {
       exportLoading: false,

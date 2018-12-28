@@ -35,7 +35,7 @@
 <script>
 import excel from '@/libs/excel'
 export default {
-  name: 'upload-excel',
+  name: 'agent-manage',
   data () {
     return {
       uploadLoading: false,
