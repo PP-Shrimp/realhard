@@ -1,13 +1,16 @@
 <template>
   <div class="user-avator-dropdown">
     <Dropdown @on-click="handleClick">
-      <Badge :dot="!!messageUnreadCount">
+      <Badge>
         <Avatar :src="userAvator"/>
+        <span>云南大明广告代理</span>
       </Badge>
       <Icon :size="18" type="md-arrow-dropdown"></Icon>
       <DropdownMenu slot="list">
-        <DropdownItem name="message">
-          消息中心<Badge style="margin-left: 10px" :count="messageUnreadCount"></Badge>
+        <DropdownItem name="message">分页配置
+          <!-- <Badge style="margin-left: 10px" :count="messageUnreadCount"></Badge> -->
+        </DropdownItem>
+        <DropdownItem name="message">更改密码
         </DropdownItem>
         <DropdownItem name="logout">退出登录</DropdownItem>
       </DropdownMenu>
@@ -16,14 +19,14 @@
 </template>
 
 <script>
-import './user.less'
-import { mapActions } from 'vuex'
+import "./user.less";
+import { mapActions } from "vuex";
 export default {
-  name: 'User',
+  name: "User",
   props: {
     userAvator: {
       type: String,
-      default: ''
+      default: ""
     },
     messageUnreadCount: {
       type: Number,
@@ -31,29 +34,29 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'handleLogOut'
-    ]),
-    logout () {
+    ...mapActions(["handleLogOut"]),
+    logout() {
       this.handleLogOut().then(() => {
         this.$router.push({
-          name: 'login'
-        })
-      })
+          name: "login"
+        });
+      });
     },
-    message () {
+    message() {
       this.$router.push({
-        name: 'message_page'
-      })
+        name: "message_page"
+      });
     },
-    handleClick (name) {
+    handleClick(name) {
       switch (name) {
-        case 'logout': this.logout()
-          break
-        case 'message': this.message()
-          break
+        case "logout":
+          this.logout();
+          break;
+        case "message":
+          this.message();
+          break;
       }
     }
   }
-}
+};
 </script>
