@@ -1,28 +1,28 @@
 <template>
   <div>
-    <Drawer title="新建代理商" v-model="value3" width="720" :mask-closable="false" :styles="styles">
+    <Drawer :title="name" v-model="value3" width="720" :mask-closable="false" :styles="styles">
       <Form ref="formData" :model="formData" :rules="checkFormData">
         <Row :gutter="32">
           <Col span="12">
             <FormItem label="代理商名称" label-position="top" prop="name">
-              <Input v-model="formData.name" placeholder="请输入代理商名称" :readonly="status=='view'"/>
+              <Input v-model="formData.name" placeholder="请输入代理商名称" :disabled="status=='view'"/>
             </FormItem>
           </Col>
           <Col span="12" v-if="status!='add'">
             <FormItem label="代理商编号" label-position="top" prop="num">
-              <Input v-model="formData.num" placeholder="请输入代理商编号" readonly />
+              <Input v-model="formData.num" placeholder="请输入代理商编号" disabled />
             </FormItem>
           </Col>
         </Row>
         <Row :gutter="32">
           <Col span="12">
             <FormItem label="联系人" label-position="top" prop="person">
-              <Input v-model="formData.person" placeholder="请输入联系人" :readonly="status=='view'"/>
+              <Input v-model="formData.person" placeholder="请输入联系人" :disabled="status=='view'"/>
             </FormItem>
           </Col>
           <Col span="12">
             <FormItem label="联系电话" label-position="top" prop="phone">
-              <Input v-model="formData.phone" placeholder="请输入联系电话" :readonly="status=='view'"/>
+              <Input v-model="formData.phone" placeholder="请输入联系电话" :disabled="status=='view'"/>
             </FormItem>
           </Col>
 
@@ -80,7 +80,7 @@ export default {
       }
     }
     return {
-      name: '新建',
+      name: '新建代理商',
       value3: false,
       styles: {
         height: 'calc(100% - 55px)',

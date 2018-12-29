@@ -1,11 +1,11 @@
 <template>
   <div>
-    <Drawer title="新建非标广告位" v-model="value3" width="720" :mask-closable="false" :styles="styles">
+    <Drawer :title="name" v-model="value3" width="720" :mask-closable="false" :styles="styles">
       <Form ref="formData" :model="formData" :rules="checkFormData">
         <Row :gutter="32">
           <Col span="12">
             <FormItem label="广告名称" label-position="top" prop="name">
-              <Input v-model="formData.name" placeholder="请输入广告名称" :readonly="status=='view'"/>
+              <Input v-model="formData.name" placeholder="请输入广告名称" :disabled="status=='view'"/>
             </FormItem>
           </Col>
           <Col span="12">
@@ -29,7 +29,7 @@
           </Col>
           <Col span="12">
             <FormItem label="刊例价(元／天)" label-position="top" prop="price">
-              <Input type="number" v-model="formData.price" placeholder="请输入刊例价" :readonly="status=='view'"/>
+              <Input type="number" v-model="formData.price" placeholder="请输入刊例价" :disabled="status=='view'"/>
             </FormItem>
           </Col>
           <Col span="12">
@@ -66,19 +66,19 @@
               style="display: block;width:100%;">
               <Input type="file" v-model="formData.picture"  placeholder="请上传效果图" />
             </Upload>-->
-            <Input type="file"  placeholder="请上传效果图" />
+            <Input type="file"  placeholder="请上传效果图" :disabled="status=='view'" />
           </FormItem>
           </Col>
         </Row>
         <Row :gutter="32">
           <Col span="12">
           <FormItem label="位置描述" label-position="top" prop="posDesc">
-            <Input type="textarea" v-model="formData.posDesc" :rows="4" placeholder="请输入位置描述" />
+            <Input type="textarea" v-model="formData.posDesc" :rows="4" placeholder="请输入位置描述" :disabled="status=='view'" />
           </FormItem>
           </Col>
           <Col span="12">
           <FormItem label="要求描述" label-position="top" prop="requireDesc">
-            <Input type="textarea" v-model="formData.requireDesc" :rows="4" placeholder="请输入要求描述" />
+            <Input type="textarea" v-model="formData.requireDesc" :rows="4" placeholder="请输入要求描述" :disabled="status=='view'"/>
           </FormItem>
           </Col>
         </Row>
@@ -110,7 +110,7 @@ export default {
       }
     }
     return {
-      name: '新建',
+      name: '新建非标广告位',
       value3: false,
       styles: {
         height: 'calc(100% - 55px)',
@@ -128,7 +128,6 @@ export default {
         picture: '', // 上传效果图
         posDesc: '', // 位置描述
         requireDesc: ''// 要求描述
-
       },
       checkFormData: {
         name: [
