@@ -1,42 +1,40 @@
 <template>
   <div>
-    <Button @click="value3 = true" type="primary">{{name}}</Button>
     <Drawer title="新建代理商" v-model="value3" width="720" :mask-closable="false" :styles="styles">
       <Form ref="formData" :model="formData" :rules="checkFormData">
         <Row :gutter="32">
           <Col span="12">
             <FormItem label="代理商名称" label-position="top" prop="name">
-              <Input v-model="formData.name" placeholder="请输入代理商名称"/>
+              <Input v-model="formData.name" placeholder="请输入代理商名称" :readonly="status=='view'"/>
             </FormItem>
           </Col>
-          <Col span="12">
+          <Col span="12" v-if="status!='add'">
             <FormItem label="代理商编号" label-position="top" prop="num">
-              <Input v-model="formData.num" placeholder="请输入代理商编号"/>
+              <Input v-model="formData.num" placeholder="请输入代理商编号" readonly />
             </FormItem>
           </Col>
           <Col span="12">
             <FormItem label="联系人" label-position="top" prop="person">
-              <Input v-model="formData.person" placeholder="请输入联系人"/>
+              <Input v-model="formData.person" placeholder="请输入联系人" :readonly="status=='view'"/>
             </FormItem>
           </Col>
           <Col span="12">
             <FormItem label="联系电话" label-position="top" prop="phone">
-              <Input v-model="formData.phone" placeholder="请输入联系电话"/>
+              <Input v-model="formData.phone" placeholder="请输入联系电话" :readonly="status=='view'"/>
             </FormItem>
           </Col>
-        </Row>
-        <Row :gutter="32">
+
           <Col span="12">
             <FormItem label="代理状态" label-position="top" prop="status">
-              <Select v-model="formData.status" placeholder="请选择代理状态">
+              <Select v-model="formData.status" placeholder="请选择代理状态" :disabled="status=='view'">
                 <Option value="0">代理中</Option>
                 <Option value="1">已注销</Option>
               </Select>
             </FormItem>
           </Col>
           <Col span="12">
-          <FormItem label="代理时间" label-position="top" prop="date">
-            <DatePicker
+          <FormItem label="代理时间" label-position="top" prop="date" >
+            <DatePicker :disabled="status=='view'"
               v-model="formData.date"
               type="daterange"
               placeholder="请选择代理时间"
@@ -49,7 +47,7 @@
       </Form>
       <div class="demo-drawer-footer">
         <Button style="margin-right: 8px" @click="cancel('formData')">取消</Button>
-        <Button type="primary" @click="handleSubmit('formData')">保存</Button>
+        <Button type="primary" @click="handleSubmit('formData')" v-if="status!='view'">保存</Button>
       </div>
     </Drawer>
   </div>
@@ -74,8 +72,9 @@ export default {
       }
     }
     const checkDate = (rule, value, callback) => {
+      console.log(value)
       if (value[0] === '') {
-        callback(new Error('请输s入代理时间'))
+        callback(new Error('请输入代理时间'))
       }
     }
     return {
@@ -86,14 +85,6 @@ export default {
         overflow: 'auto',
         paddingBottom: '53px',
         position: 'static'
-      },
-      formData: {
-        name: '', // 名称
-        num: '', // 编号
-        person: '', // 联系人
-        phone: '', // 联系电话
-        status: '0', // 代理状态
-        date: '' // 时间
       },
       checkFormData: {
         name: [
@@ -111,7 +102,18 @@ export default {
       }
     }
   },
+  props: {
+    formData: {
+      type: Object
+    },
+    status: {
+      type: String
+    }
+  },
   methods: {
+    DrawerToShow () {
+      this.value3 = true
+    },
     handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
@@ -123,8 +125,14 @@ export default {
     },
     cancel (name) {
       this.value3 = false
-      this.$refs[name].resetFields()
+      // this.$refs[name].resetFields();
     }
+  },
+  created () {
+
+  },
+  mounted () {
+
   }
 }
 </script>
