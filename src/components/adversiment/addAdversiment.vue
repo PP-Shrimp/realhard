@@ -146,9 +146,9 @@ export default {
     }
   },
   props: {
-    /* formData: {
-      type: Object
-    }, */
+    id: {
+      type: String
+    },
     status: {
       type: String
     }

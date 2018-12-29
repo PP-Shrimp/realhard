@@ -4,7 +4,7 @@
 <template>
   <div>
     <Row>
-      <Button @click="show('','add')" type="primary">新建非标资源</Button>
+      <Button @click="showAdd('','add')" type="primary">新建非标资源</Button>
       <Button @click="queryShow" type="primary" style="margin-left: 10px;">过滤
         <Icon type="ios-arrow-down"></Icon>
       </Button>
@@ -14,27 +14,51 @@
     <Row v-if="queryFlag" style="padding:20px 20px 0;">
       <Form :model="queryData" :label-width="80">
         <Col span="8">
-          <FormItem label="代理商名称" label-position="top" prop="name">
-            <Input v-model="queryData.name" placeholder="请输入代理商名称"/>
+          <FormItem label="广告名称" label-position="top" prop="name">
+            <Input v-model="queryData.name" placeholder="请输入广告名称" :readonly="status=='view'"/>
           </FormItem>
         </Col>
         <Col span="8">
-          <FormItem label="代理状态" label-position="top" prop="status">
-            <Select v-model="queryData.status" placeholder="请选择代理状态">
-              <Option value="0">代理中</Option>
-              <Option value="1">已注销</Option>
+          <FormItem label="类型" label-position="top" prop="type">
+            <Select v-model="queryData.type" placeholder="请选择类型">
+              <Option value="0">非标资源</Option>
+              <Option value="1">标准资源</Option>
             </Select>
           </FormItem>
         </Col>
         <Col span="8">
-          <FormItem label="代理时间" label-position="top" prop="date">
-            <DatePicker
-              v-model="queryData.date"
-              type="daterange"
-              placeholder="请选择代理时间"
-              style="display: block"
-              placement="bottom-end"
-            ></DatePicker>
+          <FormItem label="平台" label-position="top" prop="terrace">
+            <Select v-model="queryData.terrace" placeholder="请选择平台" :disabled="status=='view'">
+              <Option value="0">微博</Option>
+              <Option value="1">公众号</Option>
+              <Option value="2">活动</Option>
+              <Option value="3">直播</Option>
+            </Select>
+          </FormItem>
+        </Col>
+        <Col span="8">
+          <FormItem label="栏目" label-position="top" prop="column">
+            <Input v-model="queryData.column" placeholder="请输入栏目" :readonly="status=='view'"/>
+          </FormItem>
+        </Col>
+        <Col span="8">
+          <FormItem label="售卖方式" label-position="top" prop="saletype">
+            <Select v-model="queryData.saletype" placeholder="请选择售卖方式" :disabled="status=='view'">
+              <Option value="0">CPD</Option>
+            </Select>
+          </FormItem>
+        </Col>
+        <Col span="8">
+          <FormItem label="广告位状态" label-position="top" prop="state">
+            <Select v-model="queryData.state" placeholder="请选择广告位状态" :disabled="status=='view'">
+              <Option value="0">运营中</Option>
+              <Option value="1">暂停运营</Option>
+            </Select>
+          </FormItem>
+        </Col>
+        <Col span="8">
+          <FormItem label="位置" label-position="top" prop="position">
+            <Input v-model="queryData.position" placeholder="请输入位置" :readonly="status=='view'"/>
           </FormItem>
         </Col>
         <Col span="24">
@@ -73,8 +97,6 @@ export default {
       queryFlag: false,
       queryData: {
         name: "",
-        status: "0",
-        date: ""
       },
       tableTitle: [
         {
