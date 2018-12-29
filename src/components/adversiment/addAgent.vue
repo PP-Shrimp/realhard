@@ -13,6 +13,8 @@
               <Input v-model="formData.num" placeholder="请输入代理商编号" readonly />
             </FormItem>
           </Col>
+        </Row>
+        <Row :gutter="32">
           <Col span="12">
             <FormItem label="联系人" label-position="top" prop="person">
               <Input v-model="formData.person" placeholder="请输入联系人" :readonly="status=='view'"/>
