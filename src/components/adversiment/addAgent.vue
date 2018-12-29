@@ -75,7 +75,7 @@ export default {
     };
     const checkDate = (rule, value, callback) => {
       console.log(value);
-      if (value[0] == '') {
+      if (value[0] === '') {
         callback(new Error('请输入代理时间'));
       }
     };

@@ -4,7 +4,7 @@
 <template>
   <div>
     <Row>
-      <Button @click="show({},'add')" type="primary">新建</Button>
+      <Button @click="show('','add')" type="primary">新建</Button>
       <Button @click="queryShow" type="primary" style="margin-left: 10px;">过滤
         <Icon type="ios-arrow-down"></Icon>
       </Button>
@@ -68,7 +68,7 @@ export default {
         person: "", //联系人
         phone: "", //联系电话
         status: "0", //代理状态
-        date: "" //时间
+        date: ['','']//时间
       },
       status: "",
       total: 50, //总记录条数
@@ -174,7 +174,14 @@ export default {
     // row:当前行数据
     // view:编辑 or 查看
     show(row, view) {
-      this.curRow = row;
+      this.curRow = row || {
+        name: "", //名称
+        num: "", //编号
+        person: "", //联系人
+        phone: "", //联系电话
+        status: "0", //代理状态
+        date: ['',''] //时间
+      };
       this.status = view;
       this.$refs.Drawer.DrawerToShow();
     },
