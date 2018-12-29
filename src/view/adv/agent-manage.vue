@@ -5,10 +5,51 @@
   <div>
     <Row>
       <Button @click="show({},'add')" type="primary">新建</Button>
+      <Button @click="queryShow" type="primary" style="margin-left: 10px;">过滤
+        <Icon type="ios-arrow-down"></Icon>
+      </Button>
       <addAgent :formData="curRow" :status="status" ref="Drawer"></addAgent>
     </Row>
+    <Row v-if="queryFlag" style="padding:20px 20px 0;">
+      <Form :model="queryData" :label-width="80">
+        <Col span="8">
+          <FormItem label="代理商名称" label-position="top" prop="name">
+            <Input v-model="queryData.name" placeholder="请输入代理商名称"/>
+          </FormItem>
+        </Col>
+        <Col span="8">
+          <FormItem label="代理状态" label-position="top" prop="status">
+            <Select v-model="queryData.status" placeholder="请选择代理状态">
+              <Option value="0">代理中</Option>
+              <Option value="1">已注销</Option>
+            </Select>
+          </FormItem>
+        </Col>
+        <Col span="8">
+          <FormItem label="代理时间" label-position="top" prop="date">
+            <DatePicker
+              v-model="queryData.date"
+              type="daterange"
+              placeholder="请选择代理时间"
+              style="display: block"
+              placement="bottom-end"
+            ></DatePicker>
+          </FormItem>
+        </Col>
+        <Col span="24">
+          <FormItem>
+              <Button type="primary">过滤</Button>
+          </FormItem>
+        </Col>
+      </Form>
+    </Row>
     <Row class="margin-top-10">
-      <Table :columns="tableTitle" :data="tableData"></Table>
+      <Table :columns="tableTitle" :data="tableData" stripe></Table>
+      <div style="margin: 10px;overflow: hidden">
+        <div style="float: right;">
+          <Page :total="total" :current="pageNo" @on-change="changePage" show-total></Page>
+        </div>
+      </div>
     </Row>
   </div>
 </template>
@@ -22,14 +63,23 @@ export default {
   data() {
     return {
       curRow: {
-        name:'',//名称
-        num:'',//编号
-        person:'',//联系人
-        phone:'',//联系电话
-        status: "0",//代理状态
-        date: "",//时间
+        name: "", //名称
+        num: "", //编号
+        person: "", //联系人
+        phone: "", //联系电话
+        status: "0", //代理状态
+        date: "" //时间
       },
-      status:'',
+      status: "",
+      total: 50, //总记录条数
+      count: 5, //总页数
+      pageNo: 1, //当前页
+      queryFlag: false,
+      queryData: {
+        name:'',
+        status:'0',
+        date:''
+      },
       tableTitle: [
         {
           title: "代理商编号",
@@ -73,7 +123,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.show(params.row,'view');
+                      this.show(params.row, "view");
                     }
                   }
                 },
@@ -88,7 +138,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.show(params.row,'edit');
+                      this.show(params.row, "edit");
                     }
                   }
                 },
@@ -107,7 +157,8 @@ export default {
           status: "代理中",
           date: "2018-12-12 09:25",
           category7: "2018-12-12 09:25"
-        },{
+        },
+        {
           num: 156512,
           name: "云南腾云旅行社1",
           person: "舒1展",
@@ -115,17 +166,21 @@ export default {
           status: "代理中",
           date: "2018-12-13 09:25",
           category7: "2018-12-12 09:25"
-        },
+        }
       ]
     };
   },
   methods: {
     // row:当前行数据
     // view:编辑 or 查看
-    show(row,view) {
+    show(row, view) {
       this.curRow = row;
-      this.status = status;
+      this.status = view;
       this.$refs.Drawer.DrawerToShow();
+    },
+    changePage() {},
+    queryShow() {
+      this.queryFlag = !this.queryFlag;
     }
   },
   created() {},
