@@ -1,48 +1,84 @@
 <template>
   <div>
-    <Drawer title="新建代理商" v-model="value3" width="720" :mask-closable="false" :styles="styles">
+    <Drawer title="新建非标广告位" v-model="value3" width="720" :mask-closable="false" :styles="styles">
       <Form ref="formData" :model="formData" :rules="checkFormData">
         <Row :gutter="32">
           <Col span="12">
-            <FormItem label="代理商名称" label-position="top" prop="name">
-              <Input v-model="formData.name" placeholder="请输入代理商名称" :readonly="status=='view'"/>
+            <FormItem label="广告名称" label-position="top" prop="name">
+              <Input v-model="formData.name" placeholder="请输入广告名称" :readonly="status=='view'"/>
             </FormItem>
           </Col>
-          <Col span="12" v-if="status!='add'">
-            <FormItem label="代理商编号" label-position="top" prop="num">
-              <Input v-model="formData.num" placeholder="请输入代理商编号" readonly />
-            </FormItem>
+          <Col span="12">
+          <FormItem label="平台" label-position="top" prop="platform">
+            <Select v-model="formData.platform" placeholder="请选择平台" :disabled="status=='view'">
+              <Option value="0">微博</Option>
+              <Option value="1">公众号</Option>
+              <Option value="2">活动</Option>
+              <Option value="3">直播</Option>
+            </Select>
+          </FormItem>
           </Col>
         </Row>
-        <Row :gutter="32">  
+        <Row :gutter="32">
           <Col span="12">
-            <FormItem label="联系人" label-position="top" prop="person">
-              <Input v-model="formData.person" placeholder="请输入联系人" :readonly="status=='view'"/>
+          <FormItem label="售卖方式" label-position="top" prop="sell">
+            <Select v-model="formData.sell" placeholder="请选择售卖方式" :disabled="status=='view'">
+              <Option value="0">CPD</Option>
+            </Select>
+          </FormItem>
+          </Col>
+          <Col span="12">
+            <FormItem label="刊例价(元／天)" label-position="top" prop="price">
+              <Input type="number" v-model="formData.price" placeholder="请输入刊例价" :readonly="status=='view'"/>
             </FormItem>
           </Col>
           <Col span="12">
-            <FormItem label="联系电话" label-position="top" prop="phone">
-              <Input v-model="formData.phone" placeholder="请输入联系电话" :readonly="status=='view'"/>
-            </FormItem>
-          </Col>
-
-          <Col span="12">
-            <FormItem label="代理状态" label-position="top" prop="status">
-              <Select v-model="formData.status" placeholder="请选择代理状态" :disabled="status=='view'">
-                <Option value="0">代理中</Option>
-                <Option value="1">已注销</Option>
+            <FormItem label="广告位状态" label-position="top" prop="status">
+              <Select v-model="formData.status" placeholder="请选择广告位状态" :disabled="status=='view'">
+                <Option value="0">运营中</Option>
+                <Option value="1">暂停运营</Option>
               </Select>
             </FormItem>
           </Col>
           <Col span="12">
-          <FormItem label="代理时间" label-position="top" prop="date" >
-            <DatePicker :disabled="status=='view'"
-              v-model="formData.date"
-              type="daterange"
-              placeholder="请选择代理时间"
-              style="display: block"
-              placement="bottom-end"
-            ></DatePicker>
+            <FormItem label="是否支持链接" label-position="top" prop="isLink">
+              <Select v-model="formData.isLink" placeholder="请选择是否支持链接" :disabled="status=='view'">
+                <Option value="0">不支持</Option>
+                <Option value="1">支持内链</Option>
+                <Option value="2">支持外链</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col span="12">
+          <FormItem label="上传效果图" label-position="top" prop="picture">
+            <!--<Upload
+              ref="upload"
+              :show-upload-list="false"
+              :on-success="handleSuccess"
+              :format="['jpg','jpeg','png']"
+              :max-size="2048"
+              :on-format-error="handleFormatError"
+              :on-exceeded-size="handleMaxSize"
+              :before-upload="handleBeforeUpload"
+              multiple
+              type="drag"
+              action=""
+              style="display: block;width:100%;">
+              <Input type="file" v-model="formData.picture"  placeholder="请上传效果图" />
+            </Upload>-->
+            <Input type="file"  placeholder="请上传效果图" />
+          </FormItem>
+          </Col>
+        </Row>
+        <Row :gutter="32">
+          <Col span="12">
+          <FormItem label="位置描述" label-position="top" prop="posDesc">
+            <Input type="textarea" v-model="formData.posDesc" :rows="4" placeholder="请输入位置描述" />
+          </FormItem>
+          </Col>
+          <Col span="12">
+          <FormItem label="要求描述" label-position="top" prop="requireDesc">
+            <Input type="textarea" v-model="formData.requireDesc" :rows="4" placeholder="请输入要求描述" />
           </FormItem>
           </Col>
         </Row>
@@ -56,65 +92,71 @@
 </template>
 <script>
 export default {
-  name: "addAdversiment",
-  data() {
+  name: 'addAdversiment',
+  data () {
     const checkName = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请输入代理商名称'));
+        callback(new Error('请输入代理商名称'))
       }
-    };
-    const checkPerson = (rule, value, callback) => {
+    }
+    const checkPosDesc = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请输入联系人'));
+        callback(new Error('请输入位置描述'))
       }
-    };
-    const checkPhone = (rule, value, callback) => {
+    }
+    const checkRequireDesc = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请输入联系电话'));
+        callback(new Error('请输入需求描述'))
       }
-    };
-    const checkDate = (rule, value, callback) => {
-      console.log(value);
-      if (value[0] === '') {
-        callback(new Error('请输入代理时间'));
-      }
-    };
+    }
     return {
-      name:'新建',
+      name: '新建',
       value3: false,
       styles: {
-        height: "calc(100% - 55px)",
-        overflow: "auto",
-        paddingBottom: "53px",
-        position: "static"
+        height: 'calc(100% - 55px)',
+        overflow: 'auto',
+        paddingBottom: '53px',
+        position: 'static'
       },
-      checkFormData:{
-        name:[
+      formData: {
+        name: '', // 名称
+        platform: '0', // 平台
+        sell: '0', // 售卖方式
+        price: 0, // 刊例价
+        status: '0', // 广告位状态
+        isLink: '2', // 是否支持链接
+        picture: '', // 上传效果图
+        posDesc: '', // 位置描述
+        requireDesc: ''// 要求描述
+
+      },
+      checkFormData: {
+        name: [
           { validator: checkName, trigger: 'blur' }
         ], // 名称
-        person: [
-          { validator: checkPerson, trigger: 'blur' }
+        posDesc: [
+          { validator: checkPosDesc, trigger: 'blur' }
         ],
-        phone: [
-          { validator: checkPhone, trigger: 'blur' }
-        ],
-        date: [
-          { validator: checkDate, trigger: 'blur' }
+        requireDesc: [
+          { validator: checkRequireDesc, trigger: 'blur' }
         ]
-      }
-    };
+      },
+      imgName: '',
+      visible: false,
+      uploadList: []
+    }
   },
   props: {
-    formData: {
+    /* formData: {
       type: Object
-    },
+    }, */
     status: {
       type: String
     }
   },
   methods: {
-    DrawerToShow() {
-      this.value3 = true;
+    DrawerToShow () {
+      this.value3 = true
     },
     handleSubmit (name) {
       this.$refs[name].validate((valid) => {
@@ -126,17 +168,42 @@ export default {
       })
     },
     cancel (name) {
-      this.value3 = false;
+      this.value3 = false
       // this.$refs[name].resetFields();
+    },
+    handleSuccess (res, file) {
+      file.url = 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar'
+      file.name = '7eb99afb9d5f317c912f08b5212fd69a'
+    },
+    handleFormatError (file) {
+      this.$Notice.warning({
+        title: 'The file format is incorrect',
+        desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
+      })
+    },
+    handleMaxSize (file) {
+      this.$Notice.warning({
+        title: 'Exceeding file size limit',
+        desc: 'File  ' + file.name + ' is too large, no more than 2M.'
+      })
+    },
+    handleBeforeUpload () {
+      const check = this.uploadList.length < 5
+      if (!check) {
+        this.$Notice.warning({
+          title: 'Up to five pictures can be uploaded.'
+        })
+      }
+      return check
     }
   },
-  created() {
+  created () {
 
   },
-  mounted() {
+  mounted () {
 
   }
-};
+}
 </script>
 <style>
 .demo-drawer-footer {
