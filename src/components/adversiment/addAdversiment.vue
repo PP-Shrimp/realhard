@@ -110,7 +110,7 @@ export default {
       }
     }
     return {
-      name: '新建非标广告位',
+      name: '非标广告位',
       value3: false,
       styles: {
         height: 'calc(100% - 55px)',

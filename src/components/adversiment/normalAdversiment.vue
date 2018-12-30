@@ -5,19 +5,19 @@
         <Row :gutter="32">
           <Col span="12">
             <FormItem label="广告位名称" label-position="top" prop="name">
-              <Input v-model="formData.name" placeholder="请输入广告位名称"/>
+              <Input v-model="formData.name" placeholder="请输入广告位名称" :disabled="status=='view'"/>
             </FormItem>
           </Col>
           <Col span="12">
             <FormItem label="广告位编号" label-position="top" prop="num">
-              <Input v-model="formData.num" placeholder="请输入广告位编号" readonly />
+              <Input v-model="formData.num" placeholder="请输入广告位编号" disabled/>
             </FormItem>
           </Col>
         </Row>
         <Row :gutter="32">
           <Col span="12">
             <FormItem label="栏目" label-position="top" prop="status">
-              <Select v-model="formData.status" placeholder="请选择栏目">
+              <Select v-model="formData.status" placeholder="请选择栏目" :disabled="status=='view'">
                 <Option value="0">首页</Option>
                 <Option value="1">酒店</Option>
                 <Option value="2">机票</Option>
@@ -27,7 +27,7 @@
           </Col>
           <Col span="12">
             <FormItem label="广告位形式" label-position="top" prop="status">
-              <Select v-model="formData.status" placeholder="请选择广告位形式">
+              <Select v-model="formData.status" placeholder="请选择广告位形式" :disabled="status=='view'">
                 <Option value="0">常规广告</Option>
                 <Option value="1">信息流</Option>
               </Select>
@@ -37,7 +37,7 @@
         <Row :gutter="32">
           <Col span="12">
             <FormItem label="是否定投范围" label-position="top" prop="status">
-              <Select v-model="formData.dtfw" placeholder="请选择定投范围">
+              <Select v-model="formData.dtfw" placeholder="请选择定投范围" :disabled="status=='view'">
                 <Option value="0">支持</Option>
                 <Option value="1">不支持</Option>
               </Select>
@@ -45,7 +45,7 @@
           </Col>
            <Col span="12" v-if="formData.dtfw==1">
             <FormItem label="刊例价" label-position="top" prop="status">
-              <Input v-model="formData.klj" placeholder="请输入刊例价"/>
+              <Input v-model="formData.klj" placeholder="请输入刊例价" :disabled="status=='view'"/>
             </FormItem>
           </Col>
         </Row>
@@ -58,7 +58,7 @@
         <Row :gutter="32">
           <Col span="12">
             <FormItem label="广告位状态" label-position="top" prop="status">
-              <Select v-model="formData.status" placeholder="请选择广告位状态">
+              <Select v-model="formData.status" placeholder="请选择广告位状态" :disabled="status=='view'">
                 <Option value="0">运营中</Option>
                 <Option value="1">暂停运营</Option>
               </Select>
@@ -66,19 +66,19 @@
           </Col>
           <Col span="12">
             <FormItem label="位置描述" label-position="top" prop="positionDesc">
-              <Input v-model="formData.positionDesc" placeholder="请输入位置描述"/>
+              <Input v-model="formData.positionDesc" placeholder="请输入位置描述" :disabled="status=='view'"/>
             </FormItem>
           </Col>
         </Row>
         <Row :gutter="32">
           <Col span="12">
             <FormItem label="要求描述" label-position="top" prop="requireDesc">
-              <Input v-model="formData.requireDesc" placeholder="请输入要求描述"/>
+              <Input v-model="formData.requireDesc" placeholder="请输入要求描述" :disabled="status=='view'"/>
             </FormItem>
           </Col>
           <Col span="12">
             <FormItem label="是否支持连接" label-position="top" prop="status">
-              <Select v-model="formData.status" placeholder="请选择代理状态">
+              <Select v-model="formData.status" placeholder="请选择是否支持连接" :disabled="status=='view'">
                 <Option value="0">不支持</Option>
                 <Option value="1">支持内联</Option>
                 <Option value="1">支持外联</Option>
@@ -124,62 +124,62 @@
 </template>
 <script>
 export default {
-  name: "addAdversiment",
-  data() {
+  name: 'addAdversiment',
+  data () {
     const checkName = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请输入广告位名称'));
+        callback(new Error('请输入广告位名称'))
       }
-    };
+    }
     const checkPerson = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请输入联系人'));
+        callback(new Error('请输入联系人'))
       }
-    };
+    }
     const checkPhone = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请输入联系电话'));
+        callback(new Error('请输入联系电话'))
       }
-    };
+    }
     const checkDate = (rule, value, callback) => {
-      console.log(value);
+      console.log(value)
       if (value[0] === '') {
-        callback(new Error('请输入代理时间'));
+        callback(new Error('请输入代理时间'))
       }
-    };
-    const checkPDesc = (rule, value, callback) => {//位置描述
+    }
+    const checkPDesc = (rule, value, callback) => { // 位置描述
       if (value === '') {
-        callback(new Error('请输入位置描述'));
+        callback(new Error('请输入位置描述'))
       }
-    };
-    const checkRDesc = (rule, value, callback) => {//要求描述
+    }
+    const checkRDesc = (rule, value, callback) => { // 要求描述
       if (value === '') {
-        callback(new Error('请输入要求描述'));
+        callback(new Error('请输入要求描述'))
       }
-    };
+    }
     return {
-      name:'新建',
+      name: '新建',
       value3: false,
-      formData:{
-        name:'',
-        dtfw:3,//定投范围
-        klj:0,//刊例价
-        positionDesc:'',//位置描述
-        requireDesc:'',//要求描述
-        num:'',
-        person:'',
-        phone:'',
-        status:'',
-        date:''
+      formData: {
+        name: '',
+        dtfw: 3, // 定投范围
+        klj: 0, // 刊例价
+        positionDesc: '', // 位置描述
+        requireDesc: '', // 要求描述
+        num: '',
+        person: '',
+        phone: '',
+        status: '',
+        date: ''
       },
       styles: {
-        height: "calc(100% - 55px)",
-        overflow: "auto",
-        paddingBottom: "53px",
-        position: "static"
+        height: 'calc(100% - 55px)',
+        overflow: 'auto',
+        paddingBottom: '53px',
+        position: 'static'
       },
-      checkFormData:{
-        name:[
+      checkFormData: {
+        name: [
           { validator: checkName, trigger: 'blur' }
         ], // 名称
         person: [
@@ -191,85 +191,83 @@ export default {
         date: [
           { validator: checkDate, trigger: 'blur' }
         ],
-        positionDesc:[
+        positionDesc: [
           { validator: checkPDesc, trigger: 'blur' }
         ],
-        requireDesc:[
+        requireDesc: [
           { validator: checkRDesc, trigger: 'blur' }
         ]
       },
-      tableKLTitle:[
+      tableKLTitle: [
         {
-          title: "区域",
-          key: "area"
+          title: '区域',
+          key: 'area'
         },
         {
-          title: "刊例价",
-          key: "klj"
+          title: '刊例价',
+          key: 'klj'
         },
         {
-          title: "操作",
-          key: "action",
-          title: "操作",
-          key: "action",
+          title: '操作',
+          key: 'action',
           render: (h, params) => {
-            return h("div", [
+            return h('div', [
               h(
-                "Button",
+                'Button',
                 {
                   props: {
-                    type: "text",
-                    size: "small"
+                    type: 'text',
+                    size: 'small'
                   },
                   on: {
                     click: () => {
-                      console.log('xiugai');
+                      console.log('xiugai')
                     }
                   }
                 },
-                "修改"
+                '修改'
               )
-            ]);
+            ])
           }
         }
       ],
-      tableKLData:[
+      tableKLData: [
         {
           area: '北京',
-          klj: '156312/月',
+          klj: '156312/月'
         },
         {
           area: '北京',
-          klj: '156312/月',
+          klj: '156312/月'
         }
       ],
-      tableSCYQTitle:[
+      tableSCYQTitle: [
         {
-          title:'类型',
-          key:'scyqType'
+          title: '类型',
+          key: 'scyqType'
         },
         {
-          title:'格式',
-          key:'scyqGS'
+          title: '格式',
+          key: 'scyqGS'
         },
         {
-          title:'尺寸/字数',
-          key:'scyqCCZS'
+          title: '尺寸/字数',
+          key: 'scyqCCZS'
         },
         {
-          title:'图片大小',
-          key:'scyqSize'
+          title: '图片大小',
+          key: 'scyqSize'
         }
       ],
-      tableSCYQData:[
+      tableSCYQData: [
         {
-          scyqType:'图片',
-          scyqGS:'jpg',
-          scyqCCZS:'1234',
-          scyqSize:'<=800kb'
+          scyqType: '图片',
+          scyqGS: 'jpg',
+          scyqCCZS: '1234',
+          scyqSize: '<=800kb'
         }
       ]
-    };
+    }
   },
   props: {
     id: {
@@ -280,8 +278,8 @@ export default {
     }
   },
   methods: {
-    DrawerToShow() {
-      this.value3 = true;
+    DrawerToShow () {
+      this.value3 = true
     },
     handleSubmit (name) {
       this.$refs[name].validate((valid) => {
@@ -293,17 +291,17 @@ export default {
       })
     },
     cancel (name) {
-      this.value3 = false;
+      this.value3 = false
       // this.$refs[name].resetFields();
     }
   },
-  created() {
+  created () {
 
   },
-  mounted() {
+  mounted () {
 
   }
-};
+}
 </script>
 <style>
 .demo-drawer-footer {
