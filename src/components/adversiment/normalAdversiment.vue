@@ -4,46 +4,114 @@
       <Form ref="formData" :model="formData" :rules="checkFormData">
         <Row :gutter="32">
           <Col span="12">
-            <FormItem label="代理商名称" label-position="top" prop="name">
-              <Input v-model="formData.name" placeholder="请输入代理商名称" :readonly="status=='view'"/>
+            <FormItem label="广告位名称" label-position="top" prop="name">
+              <Input v-model="formData.name" placeholder="请输入广告位名称"/>
             </FormItem>
           </Col>
-          <Col span="12" v-if="status!='add'">
-            <FormItem label="代理商编号" label-position="top" prop="num">
-              <Input v-model="formData.num" placeholder="请输入代理商编号" readonly />
+          <Col span="12">
+            <FormItem label="广告位编号" label-position="top" prop="num">
+              <Input v-model="formData.num" placeholder="请输入广告位编号" readonly />
             </FormItem>
           </Col>
         </Row>
-        <Row :gutter="32">  
+        <Row :gutter="32">
           <Col span="12">
-            <FormItem label="联系人" label-position="top" prop="person">
-              <Input v-model="formData.person" placeholder="请输入联系人" :readonly="status=='view'"/>
-            </FormItem>
-          </Col>
-          <Col span="12">
-            <FormItem label="联系电话" label-position="top" prop="phone">
-              <Input v-model="formData.phone" placeholder="请输入联系电话" :readonly="status=='view'"/>
-            </FormItem>
-          </Col>
-
-          <Col span="12">
-            <FormItem label="代理状态" label-position="top" prop="status">
-              <Select v-model="formData.status" placeholder="请选择代理状态" :disabled="status=='view'">
-                <Option value="0">代理中</Option>
-                <Option value="1">已注销</Option>
+            <FormItem label="栏目" label-position="top" prop="status">
+              <Select v-model="formData.status" placeholder="请选择栏目">
+                <Option value="0">首页</Option>
+                <Option value="1">酒店</Option>
+                <Option value="2">机票</Option>
+                <Option value="3">游记</Option>
               </Select>
             </FormItem>
           </Col>
           <Col span="12">
-          <FormItem label="代理时间" label-position="top" prop="date" >
-            <DatePicker :disabled="status=='view'"
-              v-model="formData.date"
-              type="daterange"
-              placeholder="请选择代理时间"
-              style="display: block"
-              placement="bottom-end"
-            ></DatePicker>
-          </FormItem>
+            <FormItem label="广告位形式" label-position="top" prop="status">
+              <Select v-model="formData.status" placeholder="请选择广告位形式">
+                <Option value="0">常规广告</Option>
+                <Option value="1">信息流</Option>
+              </Select>
+            </FormItem>
+          </Col>
+        </Row>
+        <Row :gutter="32">
+          <Col span="12">
+            <FormItem label="是否定投范围" label-position="top" prop="status">
+              <Select v-model="formData.dtfw" placeholder="请选择定投范围">
+                <Option value="0">支持</Option>
+                <Option value="1">不支持</Option>
+              </Select>
+            </FormItem>
+          </Col>
+           <Col span="12" v-if="formData.dtfw==1">
+            <FormItem label="刊例价" label-position="top" prop="status">
+              <Input v-model="formData.klj" placeholder="请输入刊例价"/>
+            </FormItem>
+          </Col>
+        </Row>
+        <Row :gutter="32" v-if="formData.dtfw==0">
+          <Col span="24">
+            <FormItem label="广告刊例" label-position="top" prop="status"></FormItem>
+            <Table :columns="tableKLTitle" :data="tableKLData" stripe></Table>
+          </Col>
+        </Row>
+        <Row :gutter="32">
+          <Col span="12">
+            <FormItem label="广告位状态" label-position="top" prop="status">
+              <Select v-model="formData.status" placeholder="请选择广告位状态">
+                <Option value="0">运营中</Option>
+                <Option value="1">暂停运营</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col span="12">
+            <FormItem label="位置描述" label-position="top" prop="positionDesc">
+              <Input v-model="formData.positionDesc" placeholder="请输入位置描述"/>
+            </FormItem>
+          </Col>
+        </Row>
+        <Row :gutter="32">
+          <Col span="12">
+            <FormItem label="要求描述" label-position="top" prop="requireDesc">
+              <Input v-model="formData.requireDesc" placeholder="请输入要求描述"/>
+            </FormItem>
+          </Col>
+          <Col span="12">
+            <FormItem label="是否支持连接" label-position="top" prop="status">
+              <Select v-model="formData.status" placeholder="请选择代理状态">
+                <Option value="0">不支持</Option>
+                <Option value="1">支持内联</Option>
+                <Option value="1">支持外联</Option>
+              </Select>
+            </FormItem>
+          </Col>
+        </Row>
+        <Row :gutter="32">
+          <Col span="12">
+            <FormItem label="上传效果图" label-position="top" prop="status">
+              <!--<Upload
+              ref="upload"
+              :show-upload-list="false"
+              :on-success="handleSuccess"
+              :format="['jpg','jpeg','png']"
+              :max-size="2048"
+              :on-format-error="handleFormatError"
+              :on-exceeded-size="handleMaxSize"
+              :before-upload="handleBeforeUpload"
+              multiple
+              type="drag"
+              action=""
+              style="display: block;width:100%;">
+              <Input type="file" v-model="formData.picture"  placeholder="请上传效果图" />
+            </Upload>-->
+              <Input type="file" placeholder="请上传效果图" :disabled="status=='view'" />
+            </FormItem>
+          </Col>
+        </Row>
+        <Row>
+          <Col span="24">
+            <FormItem label="素材要求" label-position="top" prop="status"></FormItem>
+            <Table :columns="tableSCYQTitle" :data="tableSCYQData" stripe></Table>
           </Col>
         </Row>
       </Form>
@@ -60,7 +128,7 @@ export default {
   data() {
     const checkName = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请输入代理商名称'));
+        callback(new Error('请输入广告位名称'));
       }
     };
     const checkPerson = (rule, value, callback) => {
@@ -79,11 +147,25 @@ export default {
         callback(new Error('请输入代理时间'));
       }
     };
+    const checkPDesc = (rule, value, callback) => {//位置描述
+      if (value === '') {
+        callback(new Error('请输入位置描述'));
+      }
+    };
+    const checkRDesc = (rule, value, callback) => {//要求描述
+      if (value === '') {
+        callback(new Error('请输入要求描述'));
+      }
+    };
     return {
       name:'新建',
       value3: false,
       formData:{
         name:'',
+        dtfw:3,//定投范围
+        klj:0,//刊例价
+        positionDesc:'',//位置描述
+        requireDesc:'',//要求描述
         num:'',
         person:'',
         phone:'',
@@ -108,8 +190,85 @@ export default {
         ],
         date: [
           { validator: checkDate, trigger: 'blur' }
+        ],
+        positionDesc:[
+          { validator: checkPDesc, trigger: 'blur' }
+        ],
+        requireDesc:[
+          { validator: checkRDesc, trigger: 'blur' }
         ]
-      }
+      },
+      tableKLTitle:[
+        {
+          title: "区域",
+          key: "area"
+        },
+        {
+          title: "刊例价",
+          key: "klj"
+        },
+        {
+          title: "操作",
+          key: "action",
+          title: "操作",
+          key: "action",
+          render: (h, params) => {
+            return h("div", [
+              h(
+                "Button",
+                {
+                  props: {
+                    type: "text",
+                    size: "small"
+                  },
+                  on: {
+                    click: () => {
+                      console.log('xiugai');
+                    }
+                  }
+                },
+                "修改"
+              )
+            ]);
+          }
+        }
+      ],
+      tableKLData:[
+        {
+          area: '北京',
+          klj: '156312/月',
+        },
+        {
+          area: '北京',
+          klj: '156312/月',
+        }
+      ],
+      tableSCYQTitle:[
+        {
+          title:'类型',
+          key:'scyqType'
+        },
+        {
+          title:'格式',
+          key:'scyqGS'
+        },
+        {
+          title:'尺寸/字数',
+          key:'scyqCCZS'
+        },
+        {
+          title:'图片大小',
+          key:'scyqSize'
+        }
+      ],
+      tableSCYQData:[
+        {
+          scyqType:'图片',
+          scyqGS:'jpg',
+          scyqCCZS:'1234',
+          scyqSize:'<=800kb'
+        }
+      ]
     };
   },
   props: {
